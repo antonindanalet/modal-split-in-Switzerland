@@ -307,7 +307,7 @@ def get_modal_split_by_agglo(mrmt_year, agglo_def, group_of_modes, percentage):
         folder_path_input = Path('../data/input/' + str(mrmt_year) + '/')
         csv_file_name = 'Agglos_Klassen_' + str(mrmt_year) + '.csv'
         with open(folder_path_input / csv_file_name, 'r') as agglo_classes_file:
-            df_agglo_classes = pd.read_csv(agglo_classes_file, sep=';')
+            df_agglo_classes = pd.read_csv(agglo_classes_file, sep=',')
             df_agglo_classes = df_agglo_classes[['Agglo_Klasse_ARE', 'Agglo00_No']]
     # Get the list of agglomerations
     list_of_agglomeration_numbers = df_hh[name_of_the_agglomeration_variable].unique()
@@ -830,5 +830,5 @@ def get_modal_split_by_agglo(mrmt_year, agglo_def, group_of_modes, percentage):
 def get_gemeindetyp():
     path_to_file = Path('../data/input/2015/GdeTypo12_9_2017_2_2015.csv')
     with open(path_to_file, 'r') as csv_file:
-        df_gemeindetyp = pd.read_csv(csv_file, sep=';', usecols=['Gem_No', 'TypBFS12_9_No'])
+        df_gemeindetyp = pd.read_csv(csv_file, sep=',', usecols=['Gem_No', 'TypBFS12_9_No'])
     return df_gemeindetyp
