@@ -173,7 +173,7 @@ def get_modal_split_by_bfs_numbers(list_of_commune_numbers, mtmc_year, group_of_
                                          'übrige', 'übrige (+/-)']
             new_file_name = 'Anteil_Verkehrsmittel_Distanz_' + str(mtmc_year) + '.csv'
     # Save in folder output
-    df_for_csv.to_csv(folder_path_output / 'DE' / new_file_name, index=False, sep=';', encoding='iso-8859-1',
+    df_for_csv.to_csv(folder_path_output / 'DE' / new_file_name, index=False, sep=',', encoding='iso-8859-1',
                       header=list_of_headers_in_german)
 
 
@@ -824,7 +824,7 @@ def get_modal_split_by_agglo(mrmt_year, agglo_def, group_of_modes, percentage):
         else:
             new_file_name = 'Parts_moyen_de_transport_' + str(mrmt_year) + '_' + str(agglo_def) + '.csv'
     # Save in folder output
-    df_for_csv.to_csv(folder_path_output / new_file_name, index=False, sep=';', encoding='iso-8859-1')
+    df_for_csv.to_csv(folder_path_output / new_file_name, index=False, sep=',', encoding='iso-8859-1')
 
 
 def get_gemeindetyp():
