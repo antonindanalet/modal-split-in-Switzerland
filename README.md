@@ -19,7 +19,7 @@ For it to produce the results, you also need the raw data of the Transport and M
 ### Run the code
 Please copy the files etappen.dat, Haushalte.dat and zielpersonen.dat of 2005 and etappen.csv, haushalte.csv and zielpersonen.csv of 2010 and 2015 that you receive from the Federal Statistical Office in the folders <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/tree/master/data/input/2005/mtmc05">data/input/2005/mtmc05</a>, <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/tree/master/data/input/2010/mtmc10">data/input/2010/mtmc10</a> and <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/tree/master/data/input/2015/mtmc15">data/input/2015/mtmc15</a>. Then run <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/blob/master/src/run_modal_split_in_Switzerland.py">run_modal_split_in_Switzerland.py</a>.
 
-DO NOT commit or share in any way the CSV files etappen.csv, haushalte.csv or zielpersonen.csv! These are personal data.
+DO NOT commit or share in any way the CSV files etappen.dat, Haushalte.dat, zielpersonen.datetappen.csv, haushalte.csv or zielpersonen.csv! These are personal data.
 
 ### Contact
 Please don't hesitate to contact me if you have questions or comments about this code: antonin.danalet@are.admin.ch
