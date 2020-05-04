@@ -193,7 +193,7 @@ dict_agglo_nb2name_2000 = {121: 'Wetzikon - Pfäffikon (ZH)',
                            3231: 'Heerbrugg (CH)',
                            3271: 'Buchs (SG) (CH)',
                            3336: 'Rapperswil-Jona / Rüti',  # Coding in MTMC 2015
-                           3340: 'Rapperswil-Jona / Rüti',  # Coding in MTMC 2010
+                           3340: 'Rapperswil-Jona / Rüti',  # Coding in MTMC 2010 - a mistake
                            3425: 'Wil (SG)',
                            3787: 'St. Moritz',
                            3901: 'Chur',
