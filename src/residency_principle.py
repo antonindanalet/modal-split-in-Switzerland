@@ -132,7 +132,7 @@ def get_modal_split_by_bfs_numbers(list_of_commune_numbers, mtmc_year, group_of_
         else:
             new_file_name = 'Parts_moyens_de_transport_distance_' + str(mtmc_year) + '.csv'
     # Save in folder output
-    df_for_csv.to_csv(folder_path_output / 'FR' / new_file_name, index=False, sep=';', encoding='iso-8859-1')
+    df_for_csv.to_csv(folder_path_output / 'FR' / new_file_name, index=False, sep=',', encoding='iso-8859-1')
 
     # Save in German
     # File names and headers in German
@@ -353,12 +353,14 @@ def get_modal_split_by_agglo(mrmt_year, agglo_def, group_of_modes, percentage):
         dict_km_per_mode['Echantillon'] = sample
         if agglo_def == 2012:
             if agglo_nb < 10000:
-                dict_km_per_mode['Agglomération'] = 'Agglomération ' + dict_nb_agglo_bfs[agglo_nb]
+                dict_km_per_mode['Agglomération'] = 'Agglomération ' + dict_agglo_nb2name_2012[agglo_nb]
             else:
                 dict_km_per_mode['Agglomération'] = 'Centre hors des agglomération ' + \
-                                                    dict_nb_centre_hors_agglo_bfs[agglo_nb]
-        else:
-            dict_km_per_mode['Agglomération'] = 'Agglomération ' + str(agglo_nb)
+                                                    dict_nb_centre_hors_agglo_bfs_2012[agglo_nb]
+        elif agglo_def == 2000:
+            # Numbers 306, 329, etc. do nor correspond to agglomerations, but to isolated cities ("villes isolées")
+            if agglo_nb not in [306, 329, 1301, 3851, 6136]:
+                dict_km_per_mode['Agglomération'] = 'Agglomération ' + dict_agglo_nb2name_2000[agglo_nb]
         if percentage is False:
             dict_km_per_mode.update(dict_total_km)
         df_for_csv = df_for_csv.append(dict_km_per_mode, ignore_index=True)
@@ -791,7 +793,8 @@ def get_modal_split_by_agglo(mrmt_year, agglo_def, group_of_modes, percentage):
                                                                             group_of_modes=group_of_modes,
                                                                             list_of_modes=list_of_modes)
             dict_km_per_mode['Echantillon'] = sample
-            dict_km_per_mode['Agglomération'] = 'Ville isolée (commune BFS) ' + str(number_commune_BFS)
+            dict_km_per_mode['Agglomération'] = 'Ville isolée (commune BFS) ' + \
+                                                dict_isolated_cities_nb2name_2000[number_commune_BFS]
             if percentage is False:
                 dict_km_per_mode.update(dict_total_km)
             df_for_csv = df_for_csv.append(dict_km_per_mode, ignore_index=True)
