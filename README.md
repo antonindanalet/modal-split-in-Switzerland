@@ -4,7 +4,7 @@ This code computes the modal shares in Switzerland:
      - <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/tree/master/data/output/2015/agglo2012">for 2015 with a definition of agglomerations of 2012</a>,
      - <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/tree/master/data/output/2015/agglo2000">for 2015 with a definition of agglomerations of 2000</a>,
      - <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/tree/master/data/output/2010/agglo2000">for 2010 with a definition of agglomerations of 2000</a>.
-- by a user defined list of communes, with the example of the agglomeration of Zurich here, for <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/tree/master/data/output/2010/bfs_numbers">2010</a> and <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/tree/master/data/output/2015/bfs_numbers">2015</a>.
+- by a user defined list of communes, with the example of the agglomeration of Zurich here, for <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/tree/master/data/output/2010/bfs_numbers">2010</a> and <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/tree/master/data/output/2015/bfs_numbers">2015</a>. You can change it in the file <a href="https://github.com/antonindanalet/modal-split-in-Switzerland/blob/master/src/run_modal_split_in_Switzerland.py">run_modal_split_in_Switzerland.py</a>.
 
 ## Getting Started
 These instructions will get you a copy of the project up and running on your local machine for reproducing the result and understanding how it has been generated.
