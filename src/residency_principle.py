@@ -6,10 +6,11 @@ from pathlib import Path
 from mtmc2015.utils2015.compute_confidence_interval import get_weighted_avg_and_std
 from utils_mtmc.get_mtmc_files import *
 from utils_mtmc.codage import *
+from check_list_of_commune_numbers import check_list_of_commune_numbers
 import csv
 
 
-def run_residency_principle_by_commune_numbers(list_of_commune_numbers):
+def run_residency_principle_by_commune_numbers(list_of_commune_numbers, year):
     """ This function comptues the modal shares for a list of commune numbers. For a given list of communes, it
     computes the modal share for 2010 and 2015 (mtmc_year), for each transport mode (e.g., public transport,
     group_of_modes=True) or for each transport mean (e.g., train, group_of_modes=False) and in percentage or in
@@ -18,14 +19,28 @@ def run_residency_principle_by_commune_numbers(list_of_commune_numbers):
     :return: Nothing. The function generates CSV files in data/output/*year*/bfs_numbers/ in French and German.
     """
     print('Computing modal split by commune numbers...')
-    get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2015, group_of_modes=False, percentage=False)
-    get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2015, group_of_modes=False, percentage=True)
-    get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2015, group_of_modes=True, percentage=False)
-    get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2015, group_of_modes=True, percentage=True)
-    get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2010, group_of_modes=False, percentage=False)
-    get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2010, group_of_modes=False, percentage=True)
-    get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2010, group_of_modes=True, percentage=False)
-    get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2010, group_of_modes=True, percentage=True)
+    if year == 2015:
+        check_list_of_commune_numbers(list_of_commune_numbers, year)
+        get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2015,
+                                           group_of_modes=False, percentage=False)
+        get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2015,
+                                           group_of_modes=False, percentage=True)
+        get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2015,
+                                           group_of_modes=True, percentage=False)
+        get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2015,
+                                           group_of_modes=True, percentage=True)
+    elif year == 2010:
+        check_list_of_commune_numbers(list_of_commune_numbers, year)
+        get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2010,
+                                           group_of_modes=False, percentage=False)
+        get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2010,
+                                           group_of_modes=False, percentage=True)
+        get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2010,
+                                           group_of_modes=True, percentage=False)
+        get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year=2010,
+                                           group_of_modes=True, percentage=True)
+    else:
+        print('Year not well defined')
 
 
 def run_residency_principle_by_agglomeration():
@@ -156,7 +171,7 @@ def get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year, group
         else:
             new_file_name = 'Parts_moyens_de_transport_distance_' + str(mtmc_year) + '.csv'
     # Save in folder output
-    df_for_csv.to_csv(folder_path_output / 'FR' / new_file_name, index=False, sep=',', encoding='iso-8859-1')
+    df_for_csv.to_csv(folder_path_output / 'FR' / new_file_name, index=False, sep=';', encoding='iso-8859-1')
 
     # Save in German
     # File names and headers in German
@@ -197,7 +212,7 @@ def get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year, group
                                          'übrige', 'übrige (+/-)']
             new_file_name = 'Anteil_Verkehrsmittel_Distanz_' + str(mtmc_year) + '.csv'
     # Save in folder output
-    df_for_csv.to_csv(folder_path_output / 'DE' / new_file_name, index=False, sep=',', encoding='iso-8859-1',
+    df_for_csv.to_csv(folder_path_output / 'DE' / new_file_name, index=False, sep=';', encoding='iso-8859-1',
                       header=list_of_headers_in_german)
 
 
@@ -802,7 +817,7 @@ def get_modal_split_by_agglomeration(mtmc_year, agglo_def, group_of_modes, perce
         else:
             new_file_name = 'Parts_moyen_de_transport_' + str(mtmc_year) + '_' + str(agglo_def) + '.csv'
     # Save in folder output
-    df_for_csv.to_csv(folder_path_output / new_file_name, index=False, sep=',', encoding='iso-8859-1')
+    df_for_csv.to_csv(folder_path_output / new_file_name, index=False, sep=';', encoding='iso-8859-1')
 
 
 def get_proportion_pop_in_agglomerations(mtmc_year, agglo_def, group_of_modes):
@@ -1013,7 +1028,7 @@ def get_modalsplit_in_agglomerations_2005_2015(percentage):
             new_file_name = 'Modalshare_in_agglomerations_' + str(mrmt_year) + '_2000.csv'
 
         # Save in folder for MRMT
-        df_for_csv.to_csv(folder_path_results / new_file_name, index=False, sep=',')
+        df_for_csv.to_csv(folder_path_results / new_file_name, index=False, sep=';')
 
 
 def compute_distances_and_confidence_interval_total(df_etappen, df_zp, identification_columns, full_sample=False):
