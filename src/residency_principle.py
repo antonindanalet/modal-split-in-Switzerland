@@ -97,7 +97,7 @@ def get_modal_split_by_commune_numbers(list_of_commune_numbers, mtmc_year, group
         else:
             raise Exception("Year not well defined! It must be 2010 or 2015.")
         column_name_for_mode = 'mode_simple'
-    folder_path_output = folder_path_output / 'bfs_numbers\\'
+    folder_path_output = folder_path_output / 'bfs_numbers'
     if percentage:
         columns = ['Numéro de commune BFS', 'Echantillon']
     else:
