@@ -3,14 +3,9 @@ import numpy as np
 from pathlib import Path
 
 
-folder_path_2015 = Path('../data/input/2015/mtmc15')
-folder_path_2010 = Path('../data/input/2010/mtmc10')
-folder_path_2005 = Path('../data/input/2005/mtmc05')
-
-
 def get_zp(year, selected_columns=None):
     if year == 2010:
-        with open(folder_path_2010 / 'zielpersonen.csv', 'r', encoding='latin1') as zielpersonen_file:
+        with open(Path('../data/input/2010/mtmc10/zielpersonen.csv'), 'r', encoding='latin1') as zielpersonen_file:
             if selected_columns is None:
                 df_zp = pd.read_csv(zielpersonen_file,
                                     delimiter=';',
@@ -29,15 +24,24 @@ def get_zp(year, selected_columns=None):
                                            'nation': int},
                                     usecols=selected_columns)
     elif year == 2015:
-        with open(folder_path_2015 / 'zielpersonen.csv', 'r', encoding='latin1') as zielpersonen_file:
+        with open(Path('../data/input/2015/mtmc15/zielpersonen.csv'), 'r', encoding='latin1') as zielpersonen_file:
             if selected_columns is None:
                 df_zp = pd.read_csv(zielpersonen_file)
             else:
                 df_zp = pd.read_csv(zielpersonen_file,
                                     dtype={'HHNR': int},
                                     usecols=selected_columns)
+    elif year == 2021:
+        with open(Path('../data/input/2021/mtmc21/zielpersonen.csv'), 'r', encoding='latin1') as zielpersonen_file:
+            if selected_columns is None:
+                df_zp = pd.read_csv(zielpersonen_file, delimiter=';')
+            else:
+                df_zp = pd.read_csv(zielpersonen_file,
+                                    delimiter=';',
+                                    dtype={'HHNR': int},
+                                    usecols=selected_columns)
     elif year == 2005:
-        with open(folder_path_2005 / 'zielpersonen.dat', 'r') as zielpersonen_file:
+        with open(Path('../data/input/2005/mtmc05') / 'zielpersonen.dat', 'r') as zielpersonen_file:
             if selected_columns is None:
                 df_zp = pd.read_csv(zielpersonen_file,
                                     sep='\t')
@@ -52,19 +56,25 @@ def get_zp(year, selected_columns=None):
 
 
 def get_hh(year, selected_columns=None):
-    if year == 2015:
-        with open(folder_path_2015 / 'haushalte.csv', 'r', encoding='latin1') as haushalte_file:
+    if year == 2021:
+        with open(Path('../data/input/2021/mtmc21/haushalte.csv'), 'r', encoding='latin1') as haushalte_file:
+            df_hh = pd.read_csv(haushalte_file,
+                                sep=';',
+                                dtype={'HHNR': int},
+                                usecols=selected_columns)
+    elif year == 2015:
+        with open(Path('../data/input/2015/mtmc15/haushalte.csv'), 'r', encoding='latin1') as haushalte_file:
             df_hh = pd.read_csv(haushalte_file,
                                 dtype={'HHNR': int},
                                 usecols=selected_columns)
     elif year == 2010:
-        with open(folder_path_2010 / 'haushalte.csv', 'r', encoding='latin1') as haushalte_file:
+        with open(Path('../data/input/2010/mtmc10/haushalte.csv'), 'r', encoding='latin1') as haushalte_file:
             df_hh = pd.read_csv(haushalte_file,
                                 sep=';',
                                 dtype={'HHNR': int},
                                 usecols=selected_columns)
     elif year == 2005:
-        with open(folder_path_2005 / 'Haushalte.dat', 'r') as haushalte_file:
+        with open(Path('../data/input/2005/mtmc05/Haushalte.dat'), 'r') as haushalte_file:
             df_hh = pd.read_csv(haushalte_file,
                                 sep='\t',
                                 dtype={'HHNR': int},
@@ -75,20 +85,27 @@ def get_hh(year, selected_columns=None):
 
 
 def get_etappen(year, selected_columns=None):
-    if year == 2015:
-        with open(folder_path_2015 / 'etappen.csv', 'r', encoding='latin1') as etappen_file:
+    if year == 2021:
+        with open(Path('../data/input/2021/mtmc21/etappen.csv'), 'r', encoding='latin1') as etappen_file:
+            df_etappen = pd.read_csv(etappen_file,
+                                     sep=';',
+                                     dtype={'HHNR': int,
+                                            'W_AGGLO_GROESSE2012': int},
+                                     usecols=selected_columns)
+    elif year == 2015:
+        with open(Path('../data/input/2015/mtmc15/etappen.csv'), 'r', encoding='latin1') as etappen_file:
             df_etappen = pd.read_csv(etappen_file,
                                      dtype={'HHNR': int,
                                             'W_AGGLO_GROESSE2012': int},
                                      usecols=selected_columns)
     elif year == 2010:
-        with open(folder_path_2010 / 'etappen.csv', 'r', encoding='latin1') as etappen_file:
+        with open(Path('../data/input/2010/mtmc10/etappen.csv'), 'r', encoding='latin1') as etappen_file:
             df_etappen = pd.read_csv(etappen_file,
                                      sep=';',
                                      dtype={'HHNR': int},
                                      usecols=selected_columns)
     elif year == 2005:
-        with open(folder_path_2005 / 'etappen.dat', 'r') as etappen_file:
+        with open(Path('../data/input/2005/mtmc05/etappen.dat'), 'r') as etappen_file:
             df_etappen = pd.read_csv(etappen_file,
                                      sep='\t',
                                      na_values=' ',
