@@ -966,7 +966,7 @@ def get_proportion_pop_in_agglomerations(mtmc_year, agglo_def, group_of_modes):
 
 def get_modalsplit_in_agglomerations_2005_2015(percentage):
     """ This function computes the modal share 2005, 2010 and 2015 in the agglomerations (definition 2000, so that the
-    comparision is possible). It computes the modal shares only for groups of mode (e.g., public transport) and not for
+    comparison is possible). It computes the modal shares only for groups of mode (e.g., public transport) and not for
     each mode (train, bus, tram, etc.). These results are presented in the report "Modal shares in agglomerations" (ARE,
     2018), figure 8, p.10)
     :param percentage: If true, compute the percentage of each mode; if false, computes the absolute value. Here: True.
