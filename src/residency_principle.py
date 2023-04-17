@@ -964,6 +964,95 @@ def get_proportion_pop_in_agglomerations(mtmc_year, agglo_def, group_of_modes):
         writer.writerows(list_of_results)
 
 
+def get_modalsplit_in_agglomerations_2015_2021(percentage):
+    """ This function computes the modal share 2015 and 2021 in the agglomerations (definition 2012, so that the
+    comparison is possible). It computes the modal shares only for groups of mode (e.g., public transport) and not for
+    each mode (train, bus, tram, etc.). These results are presented in the report "Modal shares in agglomerations" (ARE,
+    2018), figure 8, p.10)
+    :param percentage: If true, compute the percentage of each mode; if false, computes the absolute value. Here: True.
+    :return: Nothing. Generates three CSV files (2005, 2010, 2015)
+    """
+    list_of_modes = ['Mobilité douce', 'Transport individuel motorisé', 'Transports publics', 'Autres']
+    column_name_for_mode = 'group_of_modes'
+    for mrmt_year in [2015, 2021]:
+        folder_path_results = Path('../data/output/' + str(mrmt_year) + '/agglo2012/')
+        identification_columns = ['HHNR']
+        variable_defining_agglomeration = 'W_AGGLO_GROESSE2012'
+        if percentage:
+            columns = ['Agglomération', 'Echantillon']
+        else:
+            columns = ['Agglomération', 'Echantillon', 'Total', 'Total (+/-)']
+        for mode_simple in list_of_modes:
+            columns.extend([mode_simple, mode_simple + ' (+/-)'])
+        df_for_csv = pd.DataFrame(columns=columns)
+        df_zp = get_zp(year=mrmt_year, selected_columns=identification_columns + ['WP'])  # Get the full list of HHNR
+        df_etappen = get_etappen(mrmt_year,
+                                 selected_columns=identification_columns + ['E_Ausland', 'pseudo', 'rdist',
+                                                                            'f51300'])
+        df_hh = get_hh(year=mrmt_year, selected_columns=['HHNR', 'W_BFS', variable_defining_agglomeration])
+
+        df_etappen = df_etappen[df_etappen.E_Ausland == 2]  # Remove trips abroad
+        del df_etappen['E_Ausland']
+        df_etappen = df_etappen[df_etappen.pseudo == 1]  # Remove pseudo trip legs
+        del df_etappen['pseudo']
+        if mrmt_year == 2015:
+            df_etappen['mode_simple'] = df_etappen['f51300'].map(dict_detailed_mode2main_mode_2015)
+        elif mrmt_year == 2021:
+            df_etappen['mode_simple'] = df_etappen['f51300'].map(dict_detailed_mode2main_mode_2021)
+        del df_etappen['f51300']
+        df_etappen['group_of_modes'] = df_etappen['mode_simple'].map(dict_main_mode2group_of_modes_2015)
+        del df_etappen['mode_simple']
+        if len(df_etappen['group_of_modes'].unique()) > 4:
+            raise Exception('Error in coding')
+
+        ''' Add non-mobile HHNR/ZP '''
+        df_etappen = pd.merge(df_etappen, df_zp[identification_columns],
+                              left_on=identification_columns, right_on=identification_columns, how='right')
+        df_etappen['rdist'].fillna(0, inplace=True)  # Replace NAN by 0
+        df_etappen[column_name_for_mode].fillna('Autres', inplace=True)  # Replace NAN by 'Autres'/other
+        ''' Add agglomeration information - including for non-mobiles '''
+        df_etappen = pd.merge(df_etappen, df_hh, left_on='HHNR', right_on='HHNR', how='left')
+
+        # Results for Switzerland
+        dict_total_km, sample = compute_distances_and_confidence_interval_total(df_etappen, df_zp,
+                                                                                identification_columns)
+        dict_km_per_mode = compute_distances_and_conf_interval_per_mode(df_etappen, df_zp,
+                                                                        percentage=percentage,
+                                                                        identification_columns=identification_columns,
+                                                                        group_of_modes=True,
+                                                                        list_of_modes=list_of_modes)
+        dict_km_per_mode['Echantillon'] = sample
+        dict_km_per_mode['Agglomération'] = 'Suisse'
+        if percentage is False:
+            dict_km_per_mode.update(dict_total_km)
+        df_dict_km_per_mode = pd.DataFrame([dict_km_per_mode])
+        df_for_csv = pd.concat([df_for_csv, df_dict_km_per_mode], ignore_index=True)
+
+        # For all agglomerations
+        df_temp = df_etappen[df_etappen[variable_defining_agglomeration].isin([1, 2, 3, 4, 5])]
+        dict_total_km, sample = compute_distances_and_confidence_interval_total(df_temp, df_zp, identification_columns)
+        dict_km_per_mode = compute_distances_and_conf_interval_per_mode(df_temp, df_zp,
+                                                                        percentage=percentage,
+                                                                        identification_columns=identification_columns,
+                                                                        group_of_modes=True,
+                                                                        list_of_modes=list_of_modes)
+        dict_km_per_mode['Echantillon'] = sample
+        dict_km_per_mode['Agglomération'] = 'Toutes les agglomérations'
+        if percentage is False:
+            dict_km_per_mode.update(dict_total_km)
+        df_dict_km_per_mode = pd.DataFrame([dict_km_per_mode])
+        df_for_csv = pd.concat([df_for_csv, df_dict_km_per_mode], ignore_index=True)
+
+        # File names
+        if percentage:
+            new_file_name = 'Modalshare_in_agglomerations_percentage_' + str(mrmt_year) + '_2012.csv'
+        else:
+            new_file_name = 'Modalshare_in_agglomerations_' + str(mrmt_year) + '_2012.csv'
+
+        # Save in folder for MRMT
+        df_for_csv.to_csv(folder_path_results / new_file_name, index=False, sep=';')
+
+
 def get_modalsplit_in_agglomerations_2005_2015(percentage):
     """ This function computes the modal share 2005, 2010 and 2015 in the agglomerations (definition 2000, so that the
     comparison is possible). It computes the modal shares only for groups of mode (e.g., public transport) and not for
