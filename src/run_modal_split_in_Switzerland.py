@@ -27,6 +27,7 @@ def run_modal_split_in_switzerland():
     run_proportion_of_distances_in_agglomerations()
     # Computes the modal shares 2005, 2010 and 2015 for people living in agglomerations (definition 2000)
     get_modalsplit_in_agglomerations_2005_2015(percentage=True)
+    # Computes the modal shares 2015 and 2021 for people living in agglomerations (definition 2012)
     get_modalsplit_in_agglomerations_2015_2021(percentage=True)
 
 
