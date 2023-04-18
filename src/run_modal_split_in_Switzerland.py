@@ -23,6 +23,7 @@ def run_modal_split_in_switzerland():
                                173, 175, 176, 177, 178, 180, 182, 192, 193, 195, 196, 213, 215, 224, 241, 242, 248,
                                1321, 2933, 2938, 4022, 4031, 4061, 4066, 4067, 4071, 4073, 4074, 4079, 4084, 4226, 4238,
                                4306, 4308, 4318, 4319]
+    run_residency_principle_by_commune_numbers(list_of_commune_numbers)
     # Computes the proportion of distances and population in and out of agglomerations
     run_proportion_of_distances_in_agglomerations()
     # Computes the modal shares 2005, 2010 and 2015 for people living in agglomerations (definition 2000)
